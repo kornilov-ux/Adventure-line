@@ -15,8 +15,6 @@ class ViewController: UIViewController {
 	
 	var storyBrain = StoryBrain()
 	
-	let story0 = "You see a fork in the road"
-	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		updateUI()
@@ -24,15 +22,39 @@ class ViewController: UIViewController {
 
 	@IBAction func choiceMade(_ sender: UIButton) {
 		
-		
+		storyBrain.nextStories(userChoice: sender.currentTitle!)
 		updateUI()
 	}
 	
 	func updateUI() {
-		storyLabel.text = story0
-		choice1Button.setTitle("Take a left", for: .normal)
-		choice2Button.setTitle("Take a right", for: .normal)
-	}
+		 if storyBrain.isGameOver {
+			 // Опции для завершения игры
+			 let alert = UIAlertController(title: "Game Over", message: "Do you want to start again?", preferredStyle: .alert)
+			 
+			 let yesAction = UIAlertAction(title: "Yes", style: .default) { _ in
+				 self.restartGame()
+			 }
+			 
+			 let noAction = UIAlertAction(title: "No", style: .cancel) { _ in
+				 self.dismiss(animated: true, completion: nil)
+			 }
+			 
+			
+			 alert.addAction(yesAction)
+			 alert.addAction(noAction)
+			 present(alert, animated: true, completion: nil)
+		 } else {
+			 storyLabel.text = storyBrain.storyTitle()
+			 choice1Button.setTitle(storyBrain.getChoice1(), for: .normal)
+			 choice2Button.setTitle(storyBrain.getChoice2(), for: .normal)
+		 }
+	 }
+	 
+	 func restartGame() {
+		 storyBrain.isGameOver = false
+		 storyBrain.storyNumber = 0
+		 updateUI()
+	 }
 	
 }
 

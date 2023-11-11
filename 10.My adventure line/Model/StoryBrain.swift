@@ -9,6 +9,7 @@ import Foundation
 
 struct StoryBrain {
 	
+	var isGameOver = false
 	var storyNumber = 0
 	
 	let stories = [ Story(title: "Your car has blown a tire on a winding road in the middle of nowhere with no cell phone reception. You decide to hitchhike. A rusty pickup truck rumbles to a stop next to you. A man with a wide brimmed hat with soulless eyes opens the passenger door for you and asks: 'Need a ride, boy?'.",
@@ -26,18 +27,34 @@ struct StoryBrain {
 					Story(title: "What? Such a cop out! Did you know traffic accidents are the second leading cause of accidental death for most adult age groups?",
 						  choice1: "The",
 						  choice2: "End",
-						  choice1Destination: 0, choice2Destination: 0),
+						  choice1Destination: 6, choice2Destination: 6),
 					Story(title: "As you smash through the guardrail and careen towards the jagged rocks below you reflect on the dubious wisdom of stabbing someone while they are driving a car you are in.",
 						  choice1: "The",
 						  choice2: "End",
-						  choice1Destination: 0, choice2Destination: 0),
+						  choice1Destination: 6, choice2Destination: 6),
 					Story(title: "You bond with the murderer while crooning verses of 'Can you feel the love tonight'. He drops you off at the next town. Before you go he asks you if you know any good places to dump bodies. You reply: 'Try the pier.'",
 						  choice1: "The",
 						  choice2: "End",
-						  choice1Destination: 0, choice2Destination: 0)
+						  choice1Destination: 6, choice2Destination: 6),
 	]
-
 	
+	func storyTitle() -> String { return stories[storyNumber].title }
+	func getChoice1() -> String { return stories[storyNumber].choice1 }
+	func getChoice2() -> String { return stories[storyNumber].choice2 }
+
+	mutating func nextStories(userChoice: String) {
+		
+		let currentStory = stories[storyNumber]
+		if userChoice == currentStory.choice1 {
+			storyNumber = currentStory.choice1Destination
+		} else if userChoice == currentStory.choice2 {
+			storyNumber = currentStory.choice2Destination
+		}
+		
+		if storyNumber == 0 || storyNumber >= stories.count {
+			isGameOver = true
+		}
+	}
 	
 }
 
